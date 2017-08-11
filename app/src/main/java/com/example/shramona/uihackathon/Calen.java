@@ -5,24 +5,24 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.Calendar;
 
 public class Calen extends Activity implements View.OnClickListener {
@@ -33,11 +33,13 @@ public class Calen extends Activity implements View.OnClickListener {
     private Button done;
     private String text1,text2,empid;
     private String[] Reason = {"Vertical Bar Chart","Written feedback"};
-    // private String[] Type = {"Forenoon","Afternoon","Full Day"};
     private int year, month, day, d1, d2, m1, m2, y1, y2, flag;
      private Spinner dropdown1;
     private TextView textView;
-    private static final String STORE_URL = "http://ioclapp.16mb.com/store.php";
+    public static final String JSON_WT = "http://shramocse.000webhostapp.com/FeedHac.php";
+    EditText Empid,Wt;
+    public ListView lv;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,22 +59,10 @@ public class Calen extends Activity implements View.OnClickListener {
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
         dateView=(TextView) findViewById(R.id.textView);
-        //showDate(year,month+1,day);
         dropdown1 = (Spinner)findViewById(R.id.spinner1);
-        // dropdown2 = (Spinner)findViewById(R.id.spinner2);
-        //textView = (TextView) findViewById(R.id.textVie);
-        //Intent i = getIntent();
-        //empid = i.getStringExtra("we");
-        //textView.setText(empid);
-        //  Toast.makeText(Leave.this, empid, Toast.LENGTH_LONG).show();
-
         ArrayAdapter<CharSequence> Adapter1 = new ArrayAdapter<CharSequence>(this,android.R.layout.simple_spinner_item,Reason);
         Adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown1.setAdapter(Adapter1);
-
-       /* ArrayAdapter<CharSequence> Adapter2 = new ArrayAdapter<CharSequence>(this,android.R.layout.simple_spinner_item,Type);
-        Adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown2.setAdapter(Adapter2);*/
         done = (Button) findViewById(R.id.done);
         done.setOnClickListener(this);
     }
@@ -85,18 +75,6 @@ public class Calen extends Activity implements View.OnClickListener {
         {
             case R.id.button1: flag=1;
                 break;
-        }
-        showDialog(999);
-    }
-    @SuppressWarnings("deprecation")
-    public void setDateTo(View view) {
-        //dateView=(TextView) findViewById(R.id.textView2);
-        //button=(Button) findViewById(R.id.button2);
-        switch (view.getId())
-        {
-            case R.id.button1: flag=1;
-                break;
-
         }
         showDialog(999);
     }
@@ -127,7 +105,7 @@ public class Calen extends Activity implements View.OnClickListener {
 
     }
 
-    public void done(View v)
+    public void GO(View v)
     {
         if(d1==0){
             Toast.makeText(getApplicationContext(),"Select a Date",Toast.LENGTH_SHORT).show();
@@ -139,9 +117,6 @@ public class Calen extends Activity implements View.OnClickListener {
         String sy = Integer.toString(y1);
         String sm = Integer.toString(m1);
         String sd = Integer.toString(d1);
-        /*String ey = Integer.toString(y2);
-        String em = Integer.toString(m2);
-        String ed = Integer.toString(d2);*/
         Toast.makeText(this,sd, Toast.LENGTH_SHORT).show();
         // String empid=textView.getText().toString().trim().toLowerCase();
           if((text1=="Vertical Bar Chart"||text1=="Written feedback" || text1=="")) {
@@ -152,76 +127,20 @@ public class Calen extends Activity implements View.OnClickListener {
                 alertDialo.setCanceledOnTouchOutside(true);
                 alertDialo.show();
             }
-
-        register(empid,sy,sm,sd,text1);
-        //  register(sy,sm,sd,ey,em,ed,text1,text2,empid);
-        //database storage...
         }
 
     }
 
-    private void register(String empid,String sy,String sm,String sd,String text1) {
 
-        //String urlSuffix ="?empid="+empid+"&sy="+sy+"&sm="+sm+"&sd="+sd+"&ey="+ey+"&em="+em+"&ed="+ed+"&text1="+text1+"&text2="+text2;
-        Toast.makeText(getApplicationContext(), empid, Toast.LENGTH_LONG).show();
-        class StoreUser extends AsyncTask<String, Void, String> {
-
-            ProgressDialog loading;
-            AlertDialog Builder;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(Calen.this, "Please Wait", null, true, true);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                AlertDialog alertDialog = new AlertDialog.Builder(
-                        Calen.this).create();
-                alertDialog.setMessage(s);
-
-                alertDialog.setCanceledOnTouchOutside(true);
-                alertDialog.show();
-            /*    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                alertDialogBuilder.setMessage(s);
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();*/
-                //   Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-
-
-            }
-            @Override
-            protected String doInBackground(String... params) {
-                String s = params[0];
-                BufferedReader bufferedReader = null;
-                try {
-                    URL url = new URL(STORE_URL + s);
-                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-                    String result;
-
-                    result = bufferedReader.readLine();
-                    Log.i("hhh",result);
-                    return result;
-
-                } catch (Exception e) {
-                    return null;
-                }
-            }
-        }
-        StoreUser ru = new StoreUser();
-       // ru.execute(urlSuffix);
-    }
 
     @Override
     public void onClick(View v) {
         text1 = dropdown1.getSelectedItem().toString();
         if(text1 == "Written feedback") {
-            Toast.makeText(getApplicationContext(), "Hey there! Waito babe/dude... Work on progress", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Hey there! Waito babe/dude... Work on progress", Toast.LENGTH_LONG).show();
+            pd = ProgressDialog.show(Calen.this, "", "Loading, please wait!");
+            lv = (ListView) findViewById(R.id.lv);
+            getData();
         }
 
         if(text1=="Vertical Bar Chart"){
@@ -230,4 +149,37 @@ public class Calen extends Activity implements View.OnClickListener {
         }
 
     }
+     /* List view*/
+
+    private void getData() {
+        StringRequest sr = new StringRequest(JSON_WT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        pd.dismiss();
+                        sshowDetails(response);
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        pd.dismiss();
+                        Toast.makeText(Calen.this,"Please connect to the internet",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(sr);
+    }
+
+    private void sshowDetails(String json){
+        ParseDetailsf pdf = new ParseDetailsf(json);
+         pdf.parseDetails();
+
+        Checkf cl = new Checkf(Calen.this,Empid,ParseDetailsf.Wt);
+        lv.setAdapter(cl);
+    }
+/* List view ends*/
 }

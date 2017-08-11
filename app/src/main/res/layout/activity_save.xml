@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@drawable/back"
+    android:paddingTop="10dp">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:weightSum="1"
+        >
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:background="@android:drawable/ic_menu_add"
+            android:onClick="ok" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Employee ID"
+            android:textStyle="bold"
+            android:textColor="#20201f"
+            android:textSize="20dp"
+            android:id="@+id/empid1"/>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#20201f"
+            android:layout_marginBottom="5dip"
+            android:textSize="20dp"
+            android:id="@+id/empid"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emplyoyee name"
+            android:textStyle="bold"
+            android:textColor="#20201f"
+            android:textSize="20dp"
+            android:id="@+id/name1"/>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#20201f"
+            android:layout_marginBottom="5dip"
+            android:textSize="20dp"
+            android:id="@+id/name"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Designation"
+            android:textStyle="bold"
+            android:textColor="#20201f"
+            android:textSize="20dp"
+            android:id="@+id/desig1"/>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#20201f"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dip"
+            android:textSize="20dp"
+            android:id="@+id/desig"/>
+
+
+    </LinearLayout>
+</LinearLayout>

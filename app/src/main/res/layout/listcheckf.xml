@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp"
+            android:weightSum="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emp id"
+            android:textStyle="bold"
+            android:textColor="#20201f"
+            android:showDividers="middle"
+            android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Written feedbck"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:textColor="#20201f"
+                android:showDividers="middle"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/empid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:showDividers="middle"
+                android:text="Empid"
+                android:textColor="#20201f"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/writtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:showDividers="middle"
+                android:text="Feedback"
+                android:textColor="#20201f"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

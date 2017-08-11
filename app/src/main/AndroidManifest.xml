@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.shramona.uihackathon">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
+        android:label="Trendy Techies"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:label="Trendy Techies"
         android:theme="@style/AppTheme">
-        <activity android:name=".Splash">
+        <activity android:name=".empadd">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,10 +19,10 @@
         </activity>
         <activity android:name=".Login" />
         <activity android:name=".registration" />
-        <activity android:name=".empadd" />
-        <activity android:name=".viewpeople" />
+        <activity android:name=".Save" />
         <activity android:name=".verticalBarChart" />
-        <activity android:name=".Calen"></activity>
+        <activity android:name=".Calen" />
+        <activity android:name=".Splash"></activity>
     </application>
 
 </manifest>
